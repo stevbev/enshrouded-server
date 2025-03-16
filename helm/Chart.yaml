@@ -1,0 +1,9 @@
+apiVersion: v1
+name: enshrouded-server
+version: 1.0.0
+description: Enshrouded server.
+keywords:
+- game
+- server
+- enshrouded
+home: https://enshrouded.com/

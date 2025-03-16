@@ -1,0 +1,73 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ .Chart.Name }}"
+  labels:
+    app: "{{ .Chart.Name }}"
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+    heritage: "{{ .Release.Service }}"
+spec:
+  strategy:
+    type: Recreate
+  replicas: 1
+  selector:
+    matchLabels:
+      app: "{{ .Chart.Name }}"
+      release: "{{ .Release.Name }}"
+  template:
+    metadata:
+      labels:
+        app: "{{ .Chart.Name }}"
+        release: "{{ .Release.Name }}"
+    spec:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+      containers:
+      - name: "{{ .Chart.Name }}"
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: Always
+        resources:
+{{ toYaml .Values.resources | indent 10 }}
+        env:
+        - name: SERVER_NAME
+          value: {{ .Values.config.serverName | squote }}
+        - name: SERVER_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "enshrouded.passwordSecretName" . }}
+              key: serverPassword
+        - name: GAME_PORT
+          value: {{ .Values.config.gamePort | squote }}
+        - name: QUERY_PORT
+          value: {{ .Values.config.queryPort | squote }}
+        - name: SERVER_SLOTS
+          value: {{ .Values.config.serverSlots | squote }}
+        - name: EXTERNAL_CONFIG
+          value: {{ .Values.config.externalConfig | squote }}
+        - name: SUPERVISOR_HTTP
+          value: {{ .Values.config.supervisorEnable | squote }}
+        - name: SUPERVISOR_HTTP_PORT
+          value: {{ .Values.config.supervisorPort | squote }}
+        ports:
+        - name: game-port
+          containerPort: {{ .Values.config.gamePort | int }}
+          protocol: UDP
+        - name: query-port
+          containerPort: {{ .Values.config.queryPort | int }}
+          protocol: UDP
+        - name: supervisor-port
+          containerPort: {{ .Values.config.supervisorPort | int }}
+          protocol: TCP
+        volumeMounts:
+        - name: data
+          mountPath: /home/steam/enshrouded
+        securityContext:
+          allowPrivilegeEscalation: false
+          
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: "{{ .Chart.Name }}-data"

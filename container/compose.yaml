@@ -1,0 +1,20 @@
+version: '3'
+services:
+  enshrouded:
+    image: stevbev/enshrouded-server:latest
+    ports:
+      - "15636:15636/udp"
+      - "15637:15637/udp"
+    environment:
+      - SERVER_NAME=My Enshrouded Server
+      - SERVER_PASSWORD=ChangeMeRightNow
+      - GAME_PORT=15636
+      - QUERY_PORT=15637
+      - SERVER_SLOTS=16
+      - SERVER_IP=0.0.0.0
+      - SUPERVISOR_HTTP=false
+    volumes:
+      - enshrouded-persistent-data:/home/steam/enshrouded
+
+volumes:
+  enshrouded-persistent-data:
