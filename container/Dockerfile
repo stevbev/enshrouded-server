@@ -1,17 +1,17 @@
 FROM debian:bookworm-slim
-ENV DEBIAN_FRONTEND "noninteractive"
-ENV STEAM_APP_ID "2278520"
-ENV HOME "/home/steam"
-ENV ENSHROUDED_PATH "${HOME}/enshrouded"
-ENV ENSHROUDED_CONFIG "${ENSHROUDED_PATH}/enshrouded_server.json"
+ENV DEBIAN_FRONTEND="noninteractive"
+ENV STEAM_APP_ID="2278520"
+ENV HOME="/home/steam"
+ENV ENSHROUDED_PATH="${HOME}/enshrouded"
+ENV ENSHROUDED_CONFIG="${ENSHROUDED_PATH}/enshrouded_server.json"
 ENV STEAMCMD_PATH="${HOME}/steamcmd"
 ENV STEAM_SDK64_PATH="${HOME}/.steam/sdk64"
 ENV STEAM_SDK32_PATH="${HOME}/.steam/sdk32"
-ENV STEAM_COMPAT_CLIENT_INSTALL_PATH "$STEAMCMD_PATH"
-ENV STEAM_COMPAT_DATA_PATH "${STEAMCMD_PATH}/steamapps/compatdata/${STEAM_APP_ID}"
-ENV UMU_ID 0
-ENV GE_PROTON_VERSION "9-26"
-ENV GE_PROTON_URL "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton${GE_PROTON_VERSION}/GE-Proton${GE_PROTON_VERSION}.tar.gz"
+ENV STEAM_COMPAT_CLIENT_INSTALL_PATH="$STEAMCMD_PATH"
+ENV STEAM_COMPAT_DATA_PATH="${STEAMCMD_PATH}/steamapps/compatdata/${STEAM_APP_ID}"
+ENV UMU_ID=0
+ENV GE_PROTON_VERSION="9-26"
+ENV GE_PROTON_URL="https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton${GE_PROTON_VERSION}/GE-Proton${GE_PROTON_VERSION}.tar.gz"
 
 RUN groupadd -g "${PGID:-1000}" -o steam \
     && useradd -g "${PGID:-1000}" -u "${PUID:-1000}" -o -s /bin/bash --create-home steam \
