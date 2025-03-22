@@ -9,6 +9,7 @@
 main() {
     apply_permissions
     configure_timezone
+    create_log_file
     setup_supervisor_http_server
     exec $cmd_supervisord -c /etc/supervisor/supervisord.conf
 }
@@ -34,6 +35,15 @@ configure_timezone() {
     ln -snf "/usr/share/zoneinfo/$TZ" /etc/localtime
     echo "$TZ" > /etc/timezone
     info "Setting timezone $TZ"
+}
+
+
+# Create log file
+create_log_file() {
+    mkdir -p "${enshrouded_log_path}"
+    if ! [ -f "${enshrouded_log_path}/enshrouded_server.log" ]; then
+    touch "${enshrouded_log_path}/enshrouded_server.log"
+fi
 }
 
 
