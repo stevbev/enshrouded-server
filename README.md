@@ -7,7 +7,7 @@ Run Enshrouded dedicated server in a container. Optionally includes helm chart f
 
 ## Usage
 
-The supervisor processes within the container run as root. Enshrouded runs as the user steam (default gid:1000/uid:1000). Enshrouded will be installed to `/home/steam/enshrouded`. The persistent volume should be mounted to `/home/steam/enshrouded` and be owned by 1000:1000 so Enshrouded to installed to persistent storage and does not need to download and install the game on every container start.
+The supervisor processes within the container run as root. Enshrouded runs as the user steam (default uid:1000/gid:1000). Enshrouded will be installed to `/home/steam/enshrouded`. The persistent volume should be mounted to `/home/steam/enshrouded` and be owned by 1000:1000 so Enshrouded is installed to persistent storage and does not need to download and install the game on every container start.
 
 ### Ports
 
@@ -17,7 +17,7 @@ The supervisor processes within the container run as root. Enshrouded runs as th
 | Query Port | UDP | 15637 |
 | Supervisor Port | TCP | 9001 |
 
-### Environment Variables
+### Base Environment Variables
 
 | Name | Description | Default | Required |
 | ---- | ----------- | ------- | -------- |
@@ -32,6 +32,18 @@ The supervisor processes within the container run as root. Enshrouded runs as th
 | SUPERVISOR_HTTP_PORT | Port for the Supervisor HTTP server | 9001 | False |
 
 **Note:** SERVER_IP is ignored if using Helm because that isn't how Kubernetes works.
+
+
+### Extended Environment Variables
+
+| Name | Description | Default | Required |
+| ---- | ----------- | ------- | -------- |
+| UPDATE_CRON | How often to check for Enshrouded updates | */30 * * * * | False |
+| UPDATE_IF_IDLE | Allow updates to be installed automatically when no users connected | true | False |
+| RESTART_CRON | How often to restart the Enshrouded server | 0 */8 * * * | False |
+| RESTART_IF_IDLE | Allow Enshrouded server to be restarted automatically when no users connected | true | False |
+| SUPERVISOR_HTTP_USER | Username to access the Supervisor dashboard page | admin | False |
+| SUPERVISOR_HTTP_PASS | Password to access the Supervisor dashboard page | <no password> | False |
 
 ### Docker
 
