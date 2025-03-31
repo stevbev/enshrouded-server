@@ -2,6 +2,10 @@
 # The following are default values.
 # They can be overridden by adding the environment variables
 # to the container specification.
+STEAM_APP_ID=2278520
+HOME=/home/steam
+ENSHROUDED_PATH=${HOME}/enshrouded
+ENSHROUDED_CONFIG=${ENSHROUDED_PATH}/enshrouded_server.json
 
 # The timezone this container is running in
 TZ=${TZ:-Etc/UTC}
@@ -23,7 +27,7 @@ EXTERNAL_CONFIG=${EXTERNAL_CONFIG:-0}
 STEAMCMD_ARGS=${STEAMCMD_ARGS-validate}
 
 # Pattern to check for active connections in the Enshrouded server log file
-ACTIVE_CONNECTIONS_REGEX="m#[1-9][0-9]*\(\d+\):"
+ACTIVE_CONNECTIONS_REGEX="m#[1-9][0-9]*([0-9]*):"
 
 # How we behave when checking for whether the server is idle, if it is not
 # public (which would mean that we could just query for user activity).
