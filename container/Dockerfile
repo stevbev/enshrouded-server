@@ -10,7 +10,7 @@ ENV STEAM_SDK32_PATH="${HOME}/.steam/sdk32"
 ENV STEAM_COMPAT_CLIENT_INSTALL_PATH="$STEAMCMD_PATH"
 ENV STEAM_COMPAT_DATA_PATH="${STEAMCMD_PATH}/steamapps/compatdata/${STEAM_APP_ID}"
 ENV UMU_ID=0
-ENV GE_PROTON_VERSION="9-27"
+ENV GE_PROTON_VERSION="10-1"
 ENV GE_PROTON_URL="https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton${GE_PROTON_VERSION}/GE-Proton${GE_PROTON_VERSION}.tar.gz"
 
 RUN groupadd -g "${PGID:-1000}" -o steam \
