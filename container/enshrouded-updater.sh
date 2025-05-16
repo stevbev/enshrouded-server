@@ -50,7 +50,7 @@ update() {
             return
         fi
     fi
-    rsync --checksum --itemize-changes --exclude server_exit.drp --exclude steamapps "$enshrouded_download_path/" "$enshrouded_install_path" | tee "$logfile"
+    rsync --checksum --recursive --itemize-changes --exclude server_exit.drp --exclude steamapps "$enshrouded_download_path/" "$enshrouded_install_path" | tee "$logfile"
     if grep '^[*>]' "$logfile" > /dev/null 2>&1; then
         info "Enshrouded was updated - restarting"
         write_restart_file updated
@@ -70,8 +70,15 @@ download_enshrouded() {
     pkill -TERM steamcmd || true
     sleep 1
     pkill -KILL steamcmd || true
-    # Run Steam updater to update the files in the download path
-    ${STEAMCMD_PATH}/steamcmd.sh +@sSteamCmdForcePlatformType windows +force_install_dir "$enshrouded_download_path" +login anonymous +app_update ${STEAM_APP_ID} ${STEAMCMD_ARGS} +quit
+    if [ "${just_started}" = true ]; then
+        # Run Steam updater to update the files in the install path
+        info "Checking game installation in install path"
+        ${STEAMCMD_PATH}/steamcmd.sh +@sSteamCmdForcePlatformType windows +force_install_dir "$enshrouded_install_path" +login anonymous +app_update ${STEAM_APP_ID} ${STEAMCMD_ARGS} +quit
+    else
+        # Run Steam updater to update the files in the download path
+        info "Checking game installation in download path"
+        ${STEAMCMD_PATH}/steamcmd.sh +@sSteamCmdForcePlatformType windows +force_install_dir "$enshrouded_download_path" +login anonymous +app_update ${STEAM_APP_ID} ${STEAMCMD_ARGS} +quit
+    fi
 }
 
 
